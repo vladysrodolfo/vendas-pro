@@ -99,9 +99,10 @@ tbody td{padding:10px 12px;font-size:12px;border-bottom:1px solid rgba(128,128,1
 /* BI VENDAS GRID */
 .bi-cell{min-height:40px;border-radius:6px;padding:4px;font-size:10px;cursor:pointer;transition:all .15s;border:1px solid var(--border);background:var(--bg)}
 .bi-cell:hover{border-color:var(--accent)}
-.bi-cell.has-sales{background:rgba(34,197,94,.15);border-color:rgba(34,197,94,.3)}
-.bi-cell .bi-prod{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:90px;font-size:9px;color:var(--text-muted)}
-.bi-cell .bi-val{font-family:var(--mono);font-weight:700;font-size:10px;color:var(--green)}
+.bi-cell.has-sales{background:#16a34a;border-color:#22c55e;color:#fff}
+.bi-cell.no-sales{background:rgba(239,68,68,.15);border-color:rgba(239,68,68,.2);color:var(--red);font-size:9px;display:flex;align-items:center;justify-content:center}
+.bi-cell .bi-prod{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:90px;font-size:9px;color:rgba(255,255,255,.8)}
+.bi-cell .bi-val{font-family:var(--mono);font-weight:700;font-size:10px;color:#fff}
 @media(max-width:768px){.header-inner{flex-direction:column;height:auto;padding:12px 0;gap:10px}.nav-tabs{width:100%}.products-grid{grid-template-columns:1fr}.form-grid{grid-template-columns:1fr}.dash-cards{grid-template-columns:repeat(2,1fr)}.filter-input{width:100%}.main{padding:16px}}
 @media(max-width:480px){.dash-cards{grid-template-columns:1fr}.nav-tab{padding:5px 7px;font-size:9px}}
 .toast{position:fixed;bottom:24px;right:24px;background:var(--green);color:#fff;padding:12px 20px;border-radius:var(--radius-sm);font-size:13px;font-weight:600;z-index:300;animation:slideUp .3s ease,fadeOut .3s ease 2.5s forwards;box-shadow:0 4px 20px rgba(34,197,94,.3)}
@@ -117,19 +118,19 @@ tbody td{padding:10px 12px;font-size:12px;border-bottom:1px solid rgba(128,128,1
 <button class="theme-toggle" onclick="toggleTheme()" title="Tema" id="theme-btn">🌙</button>
 <button class="logout-btn" onclick="doLogout()" title="Sair">🚪</button>
 <nav class="nav-tabs" id="nav-tabs">
-<button class="nav-tab active" data-page="categorias">💊 Categorias</button>
+<button class="nav-tab active" data-page="categorias">💰 Simulação de Valor</button>
 <button class="nav-tab" data-page="produtos">📦 Produtos</button>
 <button class="nav-tab" data-page="vendas">🛒 Vendas</button>
-<button class="nav-tab" data-page="entregas">🚚 Entregas</button>
 <button class="nav-tab" data-page="painel-vendas">📈 Painel Vendas</button>
-<button class="nav-tab" data-page="painel-rmk">📊 Painel RMK</button>
+<button class="nav-tab" data-page="entregas">🚚 Entregas</button>
 <button class="nav-tab" data-page="remarketing">🔄 RMK</button>
+<button class="nav-tab" data-page="painel-rmk">📊 Painel RMK</button>
 <button class="nav-tab" data-page="relatorio-rmk">📋 Rel. RMK</button>
 </nav></div></div></header>
 <main class="main">
 
 <!-- CATEGORIAS -->
-<div id="page-categorias" class="page active"><h1 class="page-title">Painel de Categorias</h1><p class="page-subtitle">Configure custos e valores para cada categoria.</p><div class="products-grid" id="categorias-grid"></div></div>
+<div id="page-categorias" class="page active"><h1 class="page-title">Painel de Simulação de Valor</h1><p class="page-subtitle">Configure custos e valores para cada categoria.</p><div class="products-grid" id="categorias-grid"></div></div>
 
 <!-- PRODUTOS -->
 <div id="page-produtos" class="page"><h1 class="page-title">Cadastro de Produtos</h1><p class="page-subtitle">Cadastre produtos, categorias e controle estoque.</p>
@@ -184,11 +185,12 @@ tbody td{padding:10px 12px;font-size:12px;border-bottom:1px solid rgba(128,128,1
 <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:flex-end;">
 <div class="form-group" style="flex:2;min-width:150px;"><label>Produto</label><select id="e-produto"><option value="">Selecione...</option></select></div>
 <div class="form-group" style="flex:1;min-width:70px;"><label>Qtd</label><input type="number" id="e-qtd" value="1" min="1"></div>
-<div class="form-group" style="flex:1;min-width:90px;"><label>Valor (R$)</label><input type="number" id="e-valor" step="0.01" placeholder="0.00"></div>
 <button class="btn btn-outline btn-sm" onclick="addToCartE()" style="height:42px;">+ Add</button>
 </div>
 <div class="cart-items" id="cart-items-e"></div>
-<div style="margin-top:8px;text-align:right;font-family:var(--mono);font-weight:700;font-size:14px;" id="cart-total-e"></div>
+</div>
+<div style="margin-top:16px;padding-top:16px;border-top:1px dashed var(--border);">
+<div class="form-grid"><div class="form-group"><label>Valor Total da Entrega (R$)</label><input type="number" id="e-valor-total" step="0.01" placeholder="0.00" style="font-size:16px;font-weight:700;"></div></div>
 </div>
 <div class="form-actions"><button class="btn btn-outline" onclick="clearFormE()">Limpar</button><button class="btn btn-primary" onclick="saveEntrega()">💾 Salvar</button></div>
 </div>
@@ -301,16 +303,16 @@ async function loadEntregadores(){const{data}=await sb.from('entregadores_vp').s
 function renderEntregadores(){const l=document.getElementById('entregadores-list');if(!entregadores.length){l.innerHTML='';return;}l.innerHTML=entregadores.map(e=>`<div class="prod-item"><div><div class="prod-name">${e.nome}</div><div class="prod-cat">${e.telefone}</div></div><button class="action-btn del" onclick="delEntregador(${e.id})">🗑️</button></div>`).join('');}
 async function addEntregador(){const n=document.getElementById('ent-nome').value.trim(),t=document.getElementById('ent-tel').value.trim();if(!n||!t){showToast('⚠️!','orange');return;}await sb.from('entregadores_vp').insert({nome:n,telefone:t});document.getElementById('ent-nome').value='';document.getElementById('ent-tel').value='';showToast('✅!');await loadEntregadores();}
 async function delEntregador(id){await sb.from('entregadores_vp').delete().eq('id',id);showToast('🗑️!');await loadEntregadores();}
-function addToCartE(){const sel=document.getElementById('e-produto'),p=sel.value,cat=sel.selectedOptions[0]?.dataset?.cat||'',pid=sel.selectedOptions[0]?.dataset?.id||'',q=parseInt(document.getElementById('e-qtd').value)||1,v=parseFloat(document.getElementById('e-valor').value)||0;if(!p){showToast('⚠️!','orange');return;}cartE.push({produto:p,categoria:cat,produto_id:parseInt(pid),qtd:q,valor:v});renderCartE();sel.value='';document.getElementById('e-qtd').value=1;document.getElementById('e-valor').value='';}
+function addToCartE(){const sel=document.getElementById('e-produto'),p=sel.value,cat=sel.selectedOptions[0]?.dataset?.cat||'',pid=sel.selectedOptions[0]?.dataset?.id||'',q=parseInt(document.getElementById('e-qtd').value)||1;if(!p){showToast('⚠️!','orange');return;}cartE.push({produto:p,categoria:cat,produto_id:parseInt(pid),qtd:q});renderCartE();sel.value='';document.getElementById('e-qtd').value=1;}
 function removeFromCartE(i){cartE.splice(i,1);renderCartE();}
-function renderCartE(){const c=document.getElementById('cart-items-e');c.innerHTML=cartE.map((it,i)=>`<div class="cart-item"><div class="ci-info"><span class="cat-tag ${it.categoria}">${cl(it.categoria)}</span><strong>${it.produto}</strong><span>×${it.qtd}</span><span style="font-family:var(--mono)">${fm(it.valor)}</span></div><button class="ci-remove" onclick="removeFromCartE(${i})">✕</button></div>`).join('');const tot=cartE.reduce((s,it)=>s+it.valor,0);document.getElementById('cart-total-e').textContent=cartE.length?'Total: '+fm(tot):'';}
+function renderCartE(){const c=document.getElementById('cart-items-e');c.innerHTML=cartE.map((it,i)=>`<div class="cart-item"><div class="ci-info"><span class="cat-tag ${it.categoria}">${cl(it.categoria)}</span><strong>${it.produto}</strong><span>×${it.qtd}</span></div><button class="ci-remove" onclick="removeFromCartE(${i})">✕</button></div>`).join('');}
 async function loadEntregas(){await loadEntregadores();const{data}=await sb.from('entregas_vp').select('*').order('data_entrega',{ascending:false});entregas=data||[];renderEntregas();renderStockBar();}
 function renderEntregas(){const tbody=document.getElementById('entregas-tbody'),empty=document.getElementById('empty-entregas');if(!entregas.length){tbody.innerHTML='';empty.style.display='block';return;}empty.style.display='none';
 tbody.innerHTML=entregas.map(e=>{const it=e.itens||[];const prods=it.map(i=>i.produto).join(', ')||'—';const stCls=e.status==='entregue'?'entregue':e.status==='em_rota'?'em-rota':'ent-pendente';const stLbl=e.status==='entregue'?'Entregue':e.status==='em_rota'?'Em Rota':'Pendente';const df=new Date(e.data_entrega+'T12:00:00').toLocaleDateString('pt-BR');
 return`<tr><td><strong>${e.nome_cliente}</strong></td><td>${prods}</td><td style="font-family:var(--mono)">${fm(parseFloat(e.valor_total)||0)}</td><td>${df}</td><td><span class="ent-badge ${stCls}">${stLbl}</span></td><td><div class="action-btns">${e.status!=='entregue'?`<button class="action-btn" style="color:var(--green);border-color:var(--green);" onclick="marcarEntregue(${e.id})" title="Entregue">✓</button><button class="action-btn" style="color:var(--orange);border-color:var(--orange);" onclick="marcarEmRota(${e.id})" title="Rota">🚚</button>`:''}<button class="action-btn" onclick="enviarRota(${e.id})" title="Enviar rota">📍</button><button class="action-btn" onclick="openWA('${e.telefone_cliente||''}','${e.nome_cliente}')">💬</button><button class="action-btn" onclick="editEntrega(${e.id})">✏️</button><button class="action-btn del" onclick="delEntrega(${e.id})">🗑️</button></div></td></tr>`;}).join('');}
-async function saveEntrega(){const nome=document.getElementById('e-nome').value.trim(),tel=document.getElementById('e-tel').value.trim(),data=document.getElementById('e-data').value,endereco=document.getElementById('e-endereco').value.trim(),entId=document.getElementById('e-entregador').value,editId=document.getElementById('e-edit-id').value;
+async function saveEntrega(){const nome=document.getElementById('e-nome').value.trim(),tel=document.getElementById('e-tel').value.trim(),data=document.getElementById('e-data').value,endereco=document.getElementById('e-endereco').value.trim(),entId=document.getElementById('e-entregador').value,editId=document.getElementById('e-edit-id').value,valorTotal=parseFloat(document.getElementById('e-valor-total').value)||0;
 if(!nome||!data||!cartE.length){showToast('⚠️ Preencha!','orange');return;}
-const valor=cartE.reduce((s,it)=>s+it.valor,0);const obj={nome_cliente:nome,telefone_cliente:tel,endereco,itens:cartE,valor_total:valor,data_entrega:data,entregador_id:entId?parseInt(entId):null};
+const obj={nome_cliente:nome,telefone_cliente:tel,endereco,itens:cartE,valor_total:valorTotal,data_entrega:data,entregador_id:entId?parseInt(entId):null};
 if(editId){await sb.from('entregas_vp').update(obj).eq('id',parseInt(editId));showToast('✅ Atualizada!');}else{
 // Abater estoque ao criar entrega
 for(const it of cartE){const prod=produtos.find(p=>p.nome===it.produto);if(prod){const ant=prod.estoque||0;const post=Math.max(0,ant-it.qtd);await sb.from('produtos_vp').update({estoque:post}).eq('id',prod.id);await sb.from('estoque_mov').insert({produto_id:prod.id,tipo:'saida',quantidade:it.qtd,estoque_anterior:ant,estoque_posterior:post,referencia:'Entrega - '+nome});}}
@@ -323,30 +325,26 @@ showToast('✅ Entregue + Venda!');await loadEntregas();}
 async function marcarEmRota(id){await sb.from('entregas_vp').update({status:'em_rota'}).eq('id',id);showToast('🚚!');await loadEntregas();}
 function enviarRota(id){const e=entregas.find(x=>x.id===id);if(!e)return;const ent=entregadores.find(x=>x.id===e.entregador_id);if(!ent){showToast('⚠️ Sem entregador!','orange');return;}const itens=(e.itens||[]).map(i=>`• ${i.produto} (×${i.qtd})`).join('\n');const msg=`📦 *ROTA DE ENTREGA*\n\n👤 *Cliente:* ${e.nome_cliente}\n📱 *Tel:* ${e.telefone_cliente||'—'}\n📍 *Endereço:* ${e.endereco||'—'}\n\n🛒 *Produtos:*\n${itens}\n\n💰 *Valor:* ${fm(parseFloat(e.valor_total)||0)}`;window.open(`https://wa.me/55${ent.telefone.replace(/\D/g,'')}?text=${encodeURIComponent(msg)}`,'_blank');}
 async function delEntrega(id){await sb.from('entregas_vp').delete().eq('id',id);showToast('🗑️!');await loadEntregas();}
-function clearFormE(){['e-nome','e-tel','e-endereco'].forEach(id=>document.getElementById(id).value='');document.getElementById('e-data').value=fdf(new Date());document.getElementById('e-entregador').value='';document.getElementById('e-edit-id').value='';document.getElementById('entrega-form-title').textContent='➕ Nova Entrega';cartE=[];renderCartE();}
+function clearFormE(){['e-nome','e-tel','e-endereco','e-valor-total'].forEach(id=>document.getElementById(id).value='');document.getElementById('e-data').value=fdf(new Date());document.getElementById('e-entregador').value='';document.getElementById('e-edit-id').value='';document.getElementById('entrega-form-title').textContent='➕ Nova Entrega';cartE=[];renderCartE();}
 
 // === PAINEL VENDAS (BI) ===
 async function loadBIVendas(){const mi=document.getElementById('bi-mes').value;if(!mi)return;const[ano,mes]=mi.split('-').map(Number);const dias=dd(ano,mes);
 const startDate=`${ano}-${String(mes).padStart(2,'0')}-01`;const endDate=`${ano}-${String(mes).padStart(2,'0')}-${String(dias).padStart(2,'0')}`;
 const{data}=await sb.from('vendas').select('*').gte('data_compra',startDate).lte('data_compra',endDate).order('data_compra');
 const vendasMes=data||[];
-// Cards
 const hoje=new Date();const hStr=fdf(hoje);const semIni=new Date(hoje);semIni.setDate(hoje.getDate()-hoje.getDay());
 const vHoje=vendasMes.filter(v=>v.data_compra===hStr);const vSem=vendasMes.filter(v=>v.data_compra>=fdf(semIni));
 const totMes=vendasMes.length;const fatMes=vendasMes.reduce((s,v)=>s+parseFloat(v.valor||0),0);const fatHoje=vHoje.reduce((s,v)=>s+parseFloat(v.valor||0),0);const fatSem=vSem.reduce((s,v)=>s+parseFloat(v.valor||0),0);
-// Estoque info
-const estoqueTotal=produtos.reduce((s,p)=>s+(p.estoque||0),0);
-document.getElementById('bi-cards').innerHTML=`<div class="dash-card"><div class="label">Vendas Hoje</div><div class="value">${vHoje.length}</div><div class="sub">${fm(fatHoje)}</div></div><div class="dash-card"><div class="label">Vendas Semana</div><div class="value">${vSem.length}</div><div class="sub">${fm(fatSem)}</div></div><div class="dash-card"><div class="label">Vendas Mês</div><div class="value">${totMes}</div><div class="sub">${fm(fatMes)}</div></div><div class="dash-card" style="border-color:var(--cyan);"><div class="label">📦 Estoque Total</div><div class="value" style="color:var(--cyan);">${estoqueTotal}</div><div class="sub">unidades</div></div>`;
-// Grid por dia
+document.getElementById('bi-cards').innerHTML=`<div class="dash-card"><div class="label">Vendas Hoje</div><div class="value">${vHoje.length}</div><div class="sub">${fm(fatHoje)}</div></div><div class="dash-card"><div class="label">Vendas Semana</div><div class="value">${vSem.length}</div><div class="sub">${fm(fatSem)}</div></div><div class="dash-card"><div class="label">Vendas Mês</div><div class="value">${totMes}</div><div class="sub">${fm(fatMes)}</div></div>`;
 const porDia={};vendasMes.forEach(v=>{const d=parseInt(v.data_compra.split('-')[2]);if(!porDia[d])porDia[d]=[];porDia[d].push(v);});
 const maxVendas=Math.max(...Object.values(porDia).map(a=>a.length),1);
-let h='<table class="rmk-table"><thead><tr><th>Dia</th>';
-for(let i=1;i<=maxVendas;i++)h+=`<th>Venda ${i}</th>`;
-h+='<th>Total Dia</th></tr></thead><tbody>';
+let h='<table class="rmk-table"><thead><tr><th style="font-weight:700;">Dia</th>';
+for(let i=1;i<=maxVendas;i++)h+=`<th style="font-weight:700;">Venda ${i}</th>`;
+h+='<th style="font-weight:700;">Total Dia</th></tr></thead><tbody>';
 for(let d=1;d<=dias;d++){const vs=porDia[d]||[];const totDia=vs.reduce((s,v)=>s+parseFloat(v.valor||0),0);
 h+=`<tr><td style="font-weight:700;text-align:center;">${String(d).padStart(2,'0')}/${String(mes).padStart(2,'0')}</td>`;
 for(let i=0;i<maxVendas;i++){if(vs[i]){const v=vs[i];const prods=(v.itens||[]).map(it=>it.produto).join(', ')||v.produto;
-h+=`<td><div class="bi-cell has-sales" onclick="showVendaDetail(${v.id})"><div class="bi-prod">${prods}</div><div class="bi-val">${fm(parseFloat(v.valor||0))}</div></div></td>`;}else{h+=`<td><div class="bi-cell"></div></td>`;}}
+h+=`<td><div class="bi-cell has-sales" onclick="showVendaDetail(${v.id})"><div class="bi-prod">${prods}</div><div class="bi-val">${fm(parseFloat(v.valor||0))}</div></div></td>`;}else{h+=`<td><div class="bi-cell no-sales">Sem Venda</div></td>`;}}
 h+=`<td style="font-family:var(--mono);font-weight:700;text-align:center;${totDia>0?'color:var(--green);':''}">${totDia>0?fm(totDia):'—'}</td></tr>`;}
 h+='</tbody></table>';
 document.getElementById('bi-table-wrap').style.display='block';document.getElementById('bi-title').textContent=`${MESES[mes-1]} ${ano}`;document.getElementById('bi-container').innerHTML=h;}
