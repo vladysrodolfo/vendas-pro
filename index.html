@@ -76,13 +76,13 @@ tbody td{padding:10px 12px;font-size:12px;border-bottom:1px solid rgba(128,128,1
 .prod-item{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;background:var(--bg);border-radius:var(--radius-sm);border:1px solid var(--border)}.prod-item .prod-name{font-weight:600;font-size:14px}.prod-item .prod-cat{font-size:12px;color:var(--text-muted);margin-top:2px}
 .prod-list{display:flex;flex-direction:column;gap:8px}
 .cat-tag{display:inline-block;padding:2px 8px;border-radius:10px;font-size:10px;font-weight:700;font-family:var(--mono)}.cat-tag.capsulas{background:var(--accent-glow);color:var(--capsule-color)}.cat-tag.cha{background:var(--green-glow);color:var(--tea-color)}.cat-tag.combo{background:var(--orange-glow);color:var(--combo-color)}.cat-tag.liquido{background:var(--cyan-glow);color:var(--liquid-color)}
-.rmk-table{width:100%;border-collapse:collapse;font-size:12px}.rmk-table th{padding:8px 6px;background:var(--bg-card);border:1px solid var(--border);font-size:10px;text-transform:uppercase;letter-spacing:.5px;color:var(--text-muted);position:sticky;top:0;z-index:2;text-align:center}
-.rmk-table th input{background:transparent;border:none;color:var(--text);font-family:var(--font);font-size:10px;text-transform:uppercase;font-weight:600;text-align:center;width:100%;outline:none;padding:2px}
+.rmk-table{width:100%;border-collapse:collapse;font-size:13px}.rmk-table th{padding:10px 8px;background:var(--bg-card);border:1px solid var(--border);font-size:12px;text-transform:uppercase;letter-spacing:.5px;color:var(--text-muted);position:sticky;top:0;z-index:2;text-align:center;font-weight:700}
+.rmk-table th input{background:transparent;border:none;color:var(--text);font-family:var(--font);font-size:12px;text-transform:uppercase;font-weight:700;text-align:center;width:100%;outline:none;padding:2px}
 .rmk-table td{padding:4px;border:1px solid var(--border);text-align:center}
-.rmk-cell{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;min-height:38px;border-radius:6px;padding:4px 6px;font-family:var(--mono);font-size:11px}
+.rmk-cell{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;min-height:42px;border-radius:6px;padding:6px 8px;font-family:var(--font);font-size:13px;font-weight:600}
 .rmk-cell .rmk-btns{display:flex;gap:2px;margin-top:2px}.rmk-cell .rmk-btn{width:18px;height:18px;border-radius:4px;border:none;cursor:pointer;font-size:10px;display:flex;align-items:center;justify-content:center;opacity:.8}.rmk-cell .rmk-btn:hover{transform:scale(1.2);opacity:1}
 .rmk-cell.concluido{background:#16a34a;color:#fff;border:1px solid #22c55e}.rmk-cell.andamento{background:#d97706;color:#fff;border:1px solid #f59e0b}.rmk-cell.pendente{background:#dc2626;color:#fff;border:1px solid #ef4444}.rmk-cell.lead{background:#2563eb;color:#fff;border:1px solid #3b82f6;font-weight:700}
-.rmk-cell input[type="date"]{background:transparent;border:none;color:#fff;font-family:var(--mono);font-size:10px;width:100%;text-align:center;outline:none;cursor:pointer}.rmk-cell input[type="date"]::-webkit-calendar-picker-indicator{filter:invert(1);cursor:pointer}
+.rmk-cell input[type="date"]{background:transparent;border:none;color:#fff;font-family:var(--font);font-size:13px;font-weight:600;width:100%;text-align:center;outline:none;cursor:pointer}.rmk-cell input[type="date"]::-webkit-calendar-picker-indicator{filter:invert(1);cursor:pointer}
 .rmk-actions{display:flex;gap:4px;align-items:center;justify-content:center}
 .rmk-legend{display:flex;gap:16px;align-items:center;margin:16px 0;flex-wrap:wrap}.rmk-legend-item{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--text-muted)}.rmk-legend-dot{width:14px;height:14px;border-radius:4px}
 .rmk-painel-card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);padding:16px;cursor:pointer;transition:all .2s}.rmk-painel-card:hover{border-color:var(--accent);transform:translateY(-2px)}.rmk-painel-card.active{border-color:var(--accent);box-shadow:0 0 20px var(--accent-glow)}
@@ -97,12 +97,12 @@ tbody td{padding:10px 12px;font-size:12px;border-bottom:1px solid rgba(128,128,1
 .stock-item .sq{font-family:var(--mono);font-weight:700}
 .stock-item .sq.low{color:var(--red)}.stock-item .sq.med{color:var(--orange)}.stock-item .sq.ok{color:var(--green)}
 /* BI VENDAS GRID */
-.bi-cell{min-height:40px;border-radius:6px;padding:4px;font-size:10px;cursor:pointer;transition:all .15s;border:1px solid var(--border);background:var(--bg)}
+.bi-cell{min-height:44px;border-radius:6px;padding:6px 8px;font-size:13px;font-weight:600;cursor:pointer;transition:all .15s;border:1px solid var(--border);background:var(--bg);font-family:var(--font)}
 .bi-cell:hover{border-color:var(--accent)}
 .bi-cell.has-sales{background:#16a34a;border-color:#22c55e;color:#fff}
-.bi-cell.no-sales{background:rgba(239,68,68,.15);border-color:rgba(239,68,68,.2);color:var(--red);font-size:9px;display:flex;align-items:center;justify-content:center}
-.bi-cell .bi-prod{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:90px;font-size:9px;color:rgba(255,255,255,.8)}
-.bi-cell .bi-val{font-family:var(--mono);font-weight:700;font-size:10px;color:#fff}
+.bi-cell.no-sales{background:rgba(239,68,68,.15);border-color:rgba(239,68,68,.2);color:var(--red);font-size:13px;font-weight:600;display:flex;align-items:center;justify-content:center}
+.bi-cell .bi-prod{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:120px;font-size:12px;font-weight:500;color:rgba(255,255,255,.85)}
+.bi-cell .bi-val{font-family:var(--mono);font-weight:700;font-size:13px;color:#fff}
 @media(max-width:768px){.header-inner{flex-direction:column;height:auto;padding:12px 0;gap:10px}.nav-tabs{width:100%}.products-grid{grid-template-columns:1fr}.form-grid{grid-template-columns:1fr}.dash-cards{grid-template-columns:repeat(2,1fr)}.filter-input{width:100%}.main{padding:16px}}
 @media(max-width:480px){.dash-cards{grid-template-columns:1fr}.nav-tab{padding:5px 7px;font-size:9px}}
 .toast{position:fixed;bottom:24px;right:24px;background:var(--green);color:#fff;padding:12px 20px;border-radius:var(--radius-sm);font-size:13px;font-weight:600;z-index:300;animation:slideUp .3s ease,fadeOut .3s ease 2.5s forwards;box-shadow:0 4px 20px rgba(34,197,94,.3)}
@@ -335,7 +335,8 @@ const vendasMes=data||[];
 const hoje=new Date();const hStr=fdf(hoje);const semIni=new Date(hoje);semIni.setDate(hoje.getDate()-hoje.getDay());
 const vHoje=vendasMes.filter(v=>v.data_compra===hStr);const vSem=vendasMes.filter(v=>v.data_compra>=fdf(semIni));
 const totMes=vendasMes.length;const fatMes=vendasMes.reduce((s,v)=>s+parseFloat(v.valor||0),0);const fatHoje=vHoje.reduce((s,v)=>s+parseFloat(v.valor||0),0);const fatSem=vSem.reduce((s,v)=>s+parseFloat(v.valor||0),0);
-document.getElementById('bi-cards').innerHTML=`<div class="dash-card"><div class="label">Vendas Hoje</div><div class="value">${vHoje.length}</div><div class="sub">${fm(fatHoje)}</div></div><div class="dash-card"><div class="label">Vendas Semana</div><div class="value">${vSem.length}</div><div class="sub">${fm(fatSem)}</div></div><div class="dash-card"><div class="label">Vendas Mês</div><div class="value">${totMes}</div><div class="sub">${fm(fatMes)}</div></div>`;
+const hojeLabel=hoje.toLocaleDateString('pt-BR');const semIniLabel=semIni.toLocaleDateString('pt-BR');const semFimLabel=hoje.toLocaleDateString('pt-BR');const mesLabel=MESES[mes-1]+'/'+ano;
+document.getElementById('bi-cards').innerHTML=`<div class="dash-card"><div class="label">Vendas Hoje (${hojeLabel})</div><div class="value">${vHoje.length}</div><div class="sub">${fm(fatHoje)}</div></div><div class="dash-card"><div class="label">Vendas Semana (${semIniLabel} - ${semFimLabel})</div><div class="value">${vSem.length}</div><div class="sub">${fm(fatSem)}</div></div><div class="dash-card"><div class="label">Vendas Mês (${mesLabel})</div><div class="value">${totMes}</div><div class="sub">${fm(fatMes)}</div></div>`;
 const porDia={};vendasMes.forEach(v=>{const d=parseInt(v.data_compra.split('-')[2]);if(!porDia[d])porDia[d]=[];porDia[d].push(v);});
 const maxVendas=Math.max(...Object.values(porDia).map(a=>a.length),1);
 let h='<table class="rmk-table"><thead><tr><th style="font-weight:700;">Dia</th>';
