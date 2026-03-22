@@ -154,10 +154,10 @@ tbody td{padding:10px 12px;font-size:13px;font-weight:500;border-bottom:1px soli
 <div style="margin-top:16px;padding-top:16px;border-top:1px dashed var(--border);">
 <div style="font-size:12px;color:var(--text-muted);text-transform:uppercase;margin-bottom:10px;">💳 Pagamento</div>
 <div class="form-grid">
-<div class="form-group"><label>PIX (R$)</label><input type="number" id="v-pag-pix" step="0.01" value="0"></div>
-<div class="form-group"><label>Cartão (R$)</label><input type="number" id="v-pag-cartao" step="0.01" value="0"></div>
-<div class="form-group"><label>Dinheiro (R$)</label><input type="number" id="v-pag-dinheiro" step="0.01" value="0"></div>
-<div class="form-group"><label>Site (R$)</label><input type="number" id="v-pag-site" step="0.01" value="0"></div>
+<div class="form-group"><label>PIX (R$)</label><input type="number" id="v-pag-pix" step="0.01" value="0" oninput="autoSomaV()"></div>
+<div class="form-group"><label>Cartão (R$)</label><input type="number" id="v-pag-cartao" step="0.01" value="0" oninput="autoSomaV()"></div>
+<div class="form-group"><label>Dinheiro (R$)</label><input type="number" id="v-pag-dinheiro" step="0.01" value="0" oninput="autoSomaV()"></div>
+<div class="form-group"><label>Site (R$)</label><input type="number" id="v-pag-site" step="0.01" value="0" oninput="autoSomaV()"></div>
 </div>
 <div class="form-group" style="margin-top:10px;"><label>Valor Total (R$)</label><input type="number" id="v-valor-total" step="0.01" placeholder="0.00" style="font-size:16px;font-weight:700;"></div>
 </div>
@@ -192,10 +192,10 @@ tbody td{padding:10px 12px;font-size:13px;font-weight:500;border-bottom:1px soli
 <div style="margin-top:16px;padding-top:16px;border-top:1px dashed var(--border);">
 <div style="font-size:12px;color:var(--text-muted);text-transform:uppercase;margin-bottom:10px;">💳 Pagamento</div>
 <div class="form-grid">
-<div class="form-group"><label>PIX (R$)</label><input type="number" id="e-pag-pix" step="0.01" value="0"></div>
-<div class="form-group"><label>Cartão (R$)</label><input type="number" id="e-pag-cartao" step="0.01" value="0"></div>
-<div class="form-group"><label>Dinheiro (R$)</label><input type="number" id="e-pag-dinheiro" step="0.01" value="0"></div>
-<div class="form-group"><label>Site (R$)</label><input type="number" id="e-pag-site" step="0.01" value="0"></div>
+<div class="form-group"><label>PIX (R$)</label><input type="number" id="e-pag-pix" step="0.01" value="0" oninput="autoSomaE()"></div>
+<div class="form-group"><label>Cartão (R$)</label><input type="number" id="e-pag-cartao" step="0.01" value="0" oninput="autoSomaE()"></div>
+<div class="form-group"><label>Dinheiro (R$)</label><input type="number" id="e-pag-dinheiro" step="0.01" value="0" oninput="autoSomaE()"></div>
+<div class="form-group"><label>Site (R$)</label><input type="number" id="e-pag-site" step="0.01" value="0" oninput="autoSomaE()"></div>
 </div>
 <div class="form-group" style="margin-top:10px;"><label>Valor Total (R$)</label><input type="number" id="e-valor-total" step="0.01" placeholder="0.00" style="font-size:16px;font-weight:700;"></div>
 </div>
@@ -268,6 +268,8 @@ async function addEstoque(){const sel=document.getElementById('p-nome').value.tr
 function confirmDeleteProduto(id){deleteIdx=id;document.getElementById('modal-delete').classList.add('show');document.getElementById('btn-confirm-delete').onclick=async()=>{await sb.from('produtos_vp').delete().eq('id',id);closeModal();showToast('🗑️!');await loadProdutos();};}
 
 // === VENDAS ===
+function autoSomaV(){const p=parseFloat(document.getElementById('v-pag-pix').value)||0,c=parseFloat(document.getElementById('v-pag-cartao').value)||0,d=parseFloat(document.getElementById('v-pag-dinheiro').value)||0,s=parseFloat(document.getElementById('v-pag-site').value)||0;document.getElementById('v-valor-total').value=(p+c+d+s).toFixed(2);}
+function autoSomaE(){const p=parseFloat(document.getElementById('e-pag-pix').value)||0,c=parseFloat(document.getElementById('e-pag-cartao').value)||0,d=parseFloat(document.getElementById('e-pag-dinheiro').value)||0,s=parseFloat(document.getElementById('e-pag-site').value)||0;document.getElementById('e-valor-total').value=(p+c+d+s).toFixed(2);}
 function addToCart(){const sel=document.getElementById('v-produto'),p=sel.value,cat=sel.selectedOptions[0]?.dataset?.cat||'',q=parseInt(document.getElementById('v-qtd').value)||1;if(!p){showToast('⚠️!','orange');return;}cart.push({produto:p,categoria:cat,qtd:q});renderCart();sel.value='';document.getElementById('v-qtd').value=1;}
 function removeFromCart(i){cart.splice(i,1);renderCart();}
 function renderCart(){document.getElementById('cart-items').innerHTML=cart.map((it,i)=>`<div class="cart-item"><div class="ci-info"><span class="cat-tag ${it.categoria}">${cl(it.categoria)}</span><strong>${it.produto}</strong><span>×${it.qtd}</span></div><button class="ci-remove" onclick="removeFromCart(${i})">✕</button></div>`).join('');}
